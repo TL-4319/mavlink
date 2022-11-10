@@ -38,7 +38,7 @@ if (DEFINED MCU)
     #GIT_REPOSITORY https://github.com/bolderflight/navigation.git
     #GIT_TAG v4.0.1
     GIT_REPOSITORY git@github.com:TL-4319/navigation.git
-    GIT_TAG v1.0.0
+    GIT_TAG v1.0.1
   )
   FetchContent_MakeAvailable(navigation)
   # Add the library target
