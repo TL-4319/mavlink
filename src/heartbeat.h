@@ -52,12 +52,28 @@ enum AircraftState : int8_t {
   FTS = 5
 };
 
-enum AircraftMode : int8_t {
+/*enum AircraftMode : int8_t {
   MANUAL = 0,
   STABALIZED = 1,
   ATTITUDE = 2,
   AUTO = 3,
   TEST = 4
+};*/
+
+enum Mode : int8_t {
+  STABILIZED = 0,
+  POSHOLD = 1,
+  AUTO = 2,
+  RTL = 3,
+  LAND = 4
+};
+
+enum CustomMode : uint32_t {
+  CUSTOM_MODE_STABILIZED = 0,
+  CUSTOM_MODE_POS_HOLD = 16,
+  CUSTOM_MODE_AUTO = 3,
+  CUSTOM_MODE_RTL = 6,
+  CUSTOM_MODE_LAND = 9
 };
 
 class MavLinkHeartbeat {
@@ -94,7 +110,7 @@ class MavLinkHeartbeat {
   uint8_t msg_buf_[MAVLINK_MAX_PACKET_LEN];
   /* Data */
   bool throttle_enabled_ = false;
-  int8_t aircraft_mode_ = MANUAL;
+  int8_t aircraft_mode_ = STABILIZED;
   int8_t aircraft_state_ = INIT;
   /* Timing */
   static constexpr uint16_t HEARTBEAT_PERIOD_MS_ = 1000;
@@ -102,7 +118,7 @@ class MavLinkHeartbeat {
   /* Heartbeat */
   void SendHeartbeat();
   /* Heartbeat variables */
-  static constexpr uint32_t custom_mode_ = 0;
+  uint32_t custom_mode_ = 0;
   uint8_t type_;
   uint8_t mode_;
   uint8_t state_;

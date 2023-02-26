@@ -61,32 +61,58 @@ void MavLinkHeartbeat::SendHeartbeat() {
     }
   }
   mode_ = 0;
+  custom_mode_ = 0;
   if (throttle_enabled_) {
     mode_ |= MAV_MODE_FLAG_SAFETY_ARMED;
   }
-  switch (aircraft_mode_) {
+  mode_ |= 89;
+  // TODO: add ENUM items for LOITER and POS_HOLD mode
+  /*switch (aircraft_mode_) {
     case AircraftMode::MANUAL: {
-      mode_ |= MAV_MODE_FLAG_MANUAL_INPUT_ENABLED;
+      //mode_ |= MAV_MODE_FLAG_STABILIZED; // Changed enum to make working with GCS
       break;
     }
     case AircraftMode::STABALIZED: {
-      mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
+      //mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
       break;
     }
     case AircraftMode::ATTITUDE: {
-      mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
+      //mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
       break;
     }
     case AircraftMode::AUTO: {
-      mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
-      mode_ |= MAV_MODE_FLAG_GUIDED_ENABLED;
+      //mode_ |= MAV_MODE_FLAG_STABILIZE_ENABLED;
+      //mode_ |= MAV_MODE_FLAG_GUIDED_ENABLED;
       break;
     }
     case AircraftMode::TEST: {
       mode_ |= MAV_MODE_FLAG_TEST_ENABLED;
       break;
     }
+  }*/
+  switch(aircraft_mode_) {
+    case Mode::STABILIZED: {
+      custom_mode_ |= CustomMode::CUSTOM_MODE_STABILIZED;
+      break;
+    }
+    case Mode::POSHOLD: {
+      custom_mode_ |= CustomMode::CUSTOM_MODE_POS_HOLD;
+      break;
+    }
+    case Mode::AUTO: {
+      custom_mode_ |= CustomMode::CUSTOM_MODE_AUTO;
+      break;
+    }
+    case Mode::RTL: {
+      custom_mode_ |= CustomMode::CUSTOM_MODE_RTL;
+      break;
+    }
+    case Mode::LAND: {
+      custom_mode_ |= CustomMode::CUSTOM_MODE_LAND;
+      break;
+    }
   }
+
   switch (aircraft_state_) {
     case AircraftState::INIT: {
       state_ = MAV_STATE_BOOT;
